@@ -15,7 +15,8 @@ export class HeroDetailComponent implements OnInit {
   @Input() hero: Hero;
 
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private heroService: HeroService,
     private location: Location
 
