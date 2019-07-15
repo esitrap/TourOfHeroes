@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs'
+import { Observable, of, observable } from 'rxjs'
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service'
@@ -46,6 +46,13 @@ updateHero(hero: Hero): Observable < any > {
     catchError(this.handleError<any>('updateHero'))
   )
 }
+addHero(hero : Hero): Observable<Hero>{
+return this.http.post<Hero>(this.heroesUrl , hero , httpOptions).pipe(
+  tap((newHero:Hero)=> this.log(`added hero w/ id=$(newHero.id`)),
+  catchError(this.handleError<Hero>('this.addHero'))
+)
+}
+
 private handleError<T>(operation = 'operation', resualt ?: T){
   return (error: any): Observable<T> => {
     console.error(error);
