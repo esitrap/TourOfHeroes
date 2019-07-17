@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, observable } from 'rxjs'
+import { Observable, of, observable, pipe } from 'rxjs'
 import { Hero } from './hero';
 import { HEROES } from './mock-heroes';
 import { MessageService } from './message.service'
@@ -72,5 +72,14 @@ private handleError<T>(operation = 'operation', resualt ?: T){
   }
 private log(message : string){
     this.messageService.add(`HeroService : ${message}`);
+  }
+  searchHeroes(term: string) :Observable<Hero[]>{
+    if (!term.trim()){
+      return of ([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(_=> this.log(`found heroes matching "${term}"`)),
+      catchError (this.handleError<Hero[]>('searchHeroes,[]'))
+    );
   }
 }
