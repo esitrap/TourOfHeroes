@@ -52,6 +52,16 @@ return this.http.post<Hero>(this.heroesUrl , hero , httpOptions).pipe(
   catchError(this.handleError<Hero>('this.addHero'))
 )
 }
+deleteHero (hero : Hero | number):Observable<Hero>{
+  const id = typeof hero === 'number' ? hero :hero.id;
+  const url = `${this.heroesUrl}/${id}`;
+
+  return this.http.delete<Hero>(url ,httpOptions).pipe
+  (tap(_ => this.log(`deleted hero id=${id}`)),
+  catchError(this.handleError<Hero>('deleteHero'))
+
+  )
+}
 
 private handleError<T>(operation = 'operation', resualt ?: T){
   return (error: any): Observable<T> => {
